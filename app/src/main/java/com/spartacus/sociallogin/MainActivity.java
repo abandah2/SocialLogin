@@ -16,8 +16,11 @@ import android.widget.TextView;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.spartacus.sociallogin.sociallogin.facebook.FacebookHelper;
 import com.spartacus.sociallogin.sociallogin.facebook.FacebookListener;
+import com.spartacus.sociallogin.sociallogin.google.GoogleHelper;
+import com.spartacus.sociallogin.sociallogin.google.GoogleListener;
 import com.spartacus.sociallogin.sociallogin.twitter.TwitterHelper;
 import com.spartacus.sociallogin.sociallogin.twitter.TwitterListener;
 
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FacebookHelper mFacebook;
     private TwitterHelper mTwitter;
+    private GoogleHelper mGoogle;
 
 
     private ImageView imageView;
@@ -49,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
         initialize();
         facebookinitialize();
         twitterinitialize();
+        googleinitializa();
+
         printKeyHash(this);
 
     }
@@ -153,6 +159,36 @@ public class MainActivity extends AppCompatActivity {
         }, this, "p29SnVJ1XSBGDPivO93uANxO5", "f82uMWyAhwy2hxD3PacWrNIjYsn0WiUVk7lG8QzpbWr2RQNBQW");
 
 
+    }
+
+    private void googleinitializa() {
+        mGoogleButton = findViewById(R.id.googleli);
+        mGoogleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGoogle.performSignIn(MainActivity.this);
+
+            }
+        });
+        mGoogle = new GoogleHelper(new GoogleListener() {
+            @Override
+            public void onGoogleAuthSignIn(String authToken, GoogleSignInAccount acc) {
+                mDataTextView.setText(acc.toString());
+
+
+            }
+
+            @Override
+            public void onGoogleAuthSignInFailed(String errorMessage) {
+                // Log.e("TAGTAG",errorMessage);
+
+            }
+
+            @Override
+            public void onGoogleAuthSignOut() {
+
+            }
+        }, this, "530750722928-ev6tpms4mba58ip9piofb093cmh75fog.apps.googleusercontent.com");
     }
 
     @Override
